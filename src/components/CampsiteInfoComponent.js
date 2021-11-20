@@ -1,8 +1,6 @@
 import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-
-
 function RenderCampsite({campsite}){
     return(
         <div className="col-md-5 m-1">
@@ -50,4 +48,4 @@ function CampsiteInfo ({props}) {
     return <div />;
 }
 
-export default CampsiteInfo; 
+export default CampsiteInfo;
