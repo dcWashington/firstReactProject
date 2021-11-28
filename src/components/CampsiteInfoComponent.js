@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem, 
     Button, Modal, ModalHeader, ModalBody, Label} from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Control, LocalForm } from 'react-redux-form';
+import { Control, LocalForm, Errors} from 'react-redux-form';
 
-const required = val => val && val.length;
 const maxLength = len => val => !val || (val.length <= len);
 const minLength = len => val => val && (val.length >= len);
 
@@ -15,9 +14,22 @@ class CommentForm extends Component{
 
         this.state = {
             isModalOpen: false,
+            rating: '',
+            author: '',
+            text: '',
+            touched: {
+                author: false
+            }
         };
-        this.toggleModal = this.toggleModal.bind(this);
+
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+    }
+
+    handleBlur = (field) => () => {
+        this.setState({
+            touched: {...this.state.touched, [field]: true}
+        });
     }
 
     toggleModal() {
@@ -33,6 +45,7 @@ class CommentForm extends Component{
     }
 
     render(){
+
         return(
             <React.Fragment>
                 <Button outline onClick={this.toggleModal}>
@@ -46,8 +59,6 @@ class CommentForm extends Component{
                                 <Label htmlFor="rating">Rating</Label>
                                 <Control.select 
                                     model=".rating" 
-                                    value={this.state.rating}
-                                    onChange={this.handleInputChange}
                                     name="rating" 
                                     id="rating"
                                     className="form-control">
@@ -61,21 +72,33 @@ class CommentForm extends Component{
                             <div className="form-group">
                                 <Label htmlFor="author">Your Name</Label>
                                 <Control.text 
-                                    model=".author" 
-                                    placeholder="Your Name"
-                                    value={this.state.author}
-                                    onChange={this.handleInputChange}
+                                    model=".author"
                                     id="author" 
                                     name="author"  
-                                    className="form-control" 
+                                    className="form-control"  
+                                    placeholder="Your Name"
+                                    validators={{
+                                        minLength: minLength(2),
+                                        maxLength: maxLength(15)
+                                    }}
                                 />
+                                <Errors
+                                        className="text-danger"
+                                        model=".author"
+                                        component="div"
+                                        show="touched"
+                                        messages={{
+                                            minLength: 'Must be at least 2 characters',
+                                            maxLength: 'Must be 15 characters or less'  
+                                        }}
+                                />
+
+                                {/* <FormFeedback>{errors.author}</FormFeedback> */}
                             </div>
                             <div className="form-group">
                                 <Label htmlFor="text">Comments</Label>
                                 <Control.textarea 
                                     model=".text" 
-                                    value={this.state.text}
-                                    onChange={this.handleInputChange}
                                     id="text" 
                                     name="text"
                                     className="form-control"
@@ -142,7 +165,6 @@ function CampsiteInfo ({campsites, comments}) {
                 <div className="row">
                     <RenderCampsite campsite={campsites} />
                     <RenderComments comments={comments} />
-                    
                 </div>
             </div>
         );
