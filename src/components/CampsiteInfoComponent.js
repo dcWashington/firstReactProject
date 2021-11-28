@@ -4,6 +4,10 @@ import { Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem,
 import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 
+const required = val => val && val.length;
+const maxLength = len => val => !val || (val.length <= len);
+const minLength = len => val => val && (val.length >= len);
+
 class CommentForm extends Component{
     
     constructor(props) {
@@ -11,11 +15,9 @@ class CommentForm extends Component{
 
         this.state = {
             isModalOpen: false,
-            // rating: '1',
-            // author: '',
-            // text: ''
         };
         this.toggleModal = this.toggleModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     toggleModal() {
