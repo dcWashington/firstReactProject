@@ -21,7 +21,6 @@ class CommentForm extends Component{
                 author: false
             }
         };
-
         this.handleSubmit = this.handleSubmit.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
     }
@@ -92,8 +91,6 @@ class CommentForm extends Component{
                                             maxLength: 'Must be 15 characters or less'  
                                         }}
                                 />
-
-                                {/* <FormFeedback>{errors.author}</FormFeedback> */}
                             </div>
                             <div className="form-group">
                                 <Label htmlFor="text">Comments</Label>

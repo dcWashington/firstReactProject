@@ -28,3 +28,4 @@ export const PARTNERS = [
         description: "From polar fleeces to swimsuits, hiking boots to waders, a visit to Node will be sure to get you covered."
     }
 ]
+
