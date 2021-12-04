@@ -3,6 +3,7 @@ import { Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem,
     Button, Modal, ModalHeader, ModalBody, Label} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors} from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 const maxLength = len => val => !val || (val.length <= len);
 const minLength = len => val => val && (val.length >= len);
@@ -37,10 +38,9 @@ class CommentForm extends Component{
         });
     }
 
-    handleSubmit(value) {
-        console.log("Current state is: " + JSON.stringify(value));
-        alert("Current state is: " + JSON.stringify(value));
+    handleSubmit(values) {
         this.toggleModal();
+        this.props.addComment(this.props.campsiteId, values.rating, values.author, values.text);
     }
 
     render(){
@@ -124,7 +124,7 @@ function RenderCampsite({campsite}){
     );
 }
 
-function RenderComments({comments}){
+function RenderComments({comments, addComment, campsiteId}) {
     if (comments){
         return(
             <div className="col-md-5 m-1">
@@ -137,7 +137,7 @@ function RenderComments({comments}){
                         </div>
                     );
                 })}
-                <CommentForm />
+                <CommentForm campsiteId={campsiteId} addComment={addComment} />
 
             </div>
         );
@@ -145,23 +145,47 @@ function RenderComments({comments}){
         <div />        
 }
 
-function CampsiteInfo ({campsites, comments}) {
-    if (campsites){
+function CampsiteInfo(props) {
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    if (props.campsite) {
         return (
             <div className="container">
                 <div className="row">
                     <div className="col">
                         <Breadcrumb>
                             <BreadcrumbItem><Link to="/directory">Directory</Link></BreadcrumbItem>
-                            <BreadcrumbItem active>{campsites.name}</BreadcrumbItem>
+                            <BreadcrumbItem active>{props.campsite.name}</BreadcrumbItem>
                         </Breadcrumb>
-                        <h2>{campsites.name}</h2>
+                        <h2>{props.campsite.name}</h2>
                         <hr />
                     </div>
                 </div>
                 <div className="row">
-                    <RenderCampsite campsite={campsites} />
-                    <RenderComments comments={comments} />
+                    <RenderCampsite campsite={props.campsite} />
+                    <RenderComments 
+                        comments={props.comments}
+                        addComment={props.addComment}
+                        campsiteId={props.campsite.id}
+                    />
                 </div>
             </div>
         );
