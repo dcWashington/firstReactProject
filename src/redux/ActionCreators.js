@@ -1,11 +1,6 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 
-export const addComment = comment => ({
-    type: ActionTypes.ADD_COMMENT,
-    payload: comment
-});
-
 export const postComment = (campsiteId, rating, author, text) => dispatch => {
     
     const newComment = {
@@ -42,6 +37,44 @@ export const postComment = (campsiteId, rating, author, text) => dispatch => {
         });
 };
 
+export const postFeedback = (feedbackId, firstName, lastName, phoneNum, email, agree, contactType, feedback)  => dispatch => {
+    
+    const newFeedback = {
+        feedbackId: feedbackId,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNum: phoneNum,
+        email: email,
+        agree: agree,
+        contactType: contactType,
+        feedback: feedback
+    };
+
+    return fetch(baseUrl + 'feedback', {
+            method: "POST",
+            body: JSON.stringify(newFeedback),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => { throw error; }
+        )
+        .then((response) => response.json())
+        .catch((error) => {
+        console.log("post feedback", error.message);
+        alert("Your feedback could not be posted\nError: " + error.message);
+    });
+};
+
 export const fetchCampsites = () => dispatch => {
     dispatch(campsitesLoading());
 
@@ -65,20 +98,6 @@ export const fetchCampsites = () => dispatch => {
         .catch(error => dispatch(campsitesFailed(error.message)));
 };
 
-export const campsitesLoading = () => ({
-    type: ActionTypes.CAMPSITES_LOADING
-});
-
-export const campsitesFailed = errMess => ({
-    type: ActionTypes.CAMPSITES_FAILED,
-    payload: errMess
-});
-
-export const addCampsites = campsites => ({
-    type: ActionTypes.ADD_CAMPSITES,
-    payload: campsites
-});
-
 export const fetchComments = () => dispatch => {
     return fetch(baseUrl + 'comments')
         .then(response => {
@@ -99,16 +118,6 @@ export const fetchComments = () => dispatch => {
         .then(comments => dispatch(addComments(comments)))
         .catch(error => dispatch(commentsFailed(error.message)));
 };
-
-export const commentsFailed = errMess => ({
-    type: ActionTypes.COMMENTS_FAILED,
-    payload: errMess
-});
-
-export const addComments = comments => ({
-    type: ActionTypes.ADD_COMMENTS,
-    payload: comments
-});
 
 export const fetchPromotions = () => dispatch => {
     dispatch(promotionsLoading());
@@ -133,6 +142,84 @@ export const fetchPromotions = () => dispatch => {
         .catch(error => dispatch(promotionsFailed(error.message)));
 };
 
+export const fetchPartners = () => dispatch => {
+    dispatch(partnersLoading());
+
+    return fetch(baseUrl + 'partners')
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => {
+                const errMess = new Error(error.message);
+                throw errMess;
+            }
+        )
+        .then(response => response.json())
+        .then(partners => dispatch(addPartners(partners)))
+        .catch(error => dispatch(partnersFailed(error.message)));
+};
+
+export const fetchFeedback = () => dispatch => {
+    return fetch(baseUrl + 'feedbacks')
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => {
+                const errMess = new Error(error.message);
+                throw errMess;
+            }
+        )
+        .then(response => response.json())
+        .then(feedbacks => dispatch(addFeedbacks(feedbacks)))
+        .catch(error => dispatch(feedbacksFailed(error.message)));
+};
+
+export const addCampsites = campsites => ({
+    type: ActionTypes.ADD_CAMPSITES,
+    payload: campsites
+});
+
+export const campsitesLoading = () => ({
+    type: ActionTypes.CAMPSITES_LOADING
+});
+
+export const campsitesFailed = errMess => ({
+    type: ActionTypes.CAMPSITES_FAILED,
+    payload: errMess
+});
+
+export const addComment = comment => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: comment
+});
+
+export const commentsFailed = errMess => ({
+    type: ActionTypes.COMMENTS_FAILED,
+    payload: errMess
+});
+
+export const addComments = comments => ({
+    type: ActionTypes.ADD_COMMENTS,
+    payload: comments
+});
+
+export const addPromotions = promotions => ({
+    type: ActionTypes.ADD_PROMOTIONS,
+    payload: promotions
+});
+
 export const promotionsLoading = () => ({
     type: ActionTypes.PROMOTIONS_LOADING
 });
@@ -142,7 +229,32 @@ export const promotionsFailed = errMess => ({
     payload: errMess
 });
 
-export const addPromotions = promotions => ({
-    type: ActionTypes.ADD_PROMOTIONS,
-    payload: promotions
+export const addPartners = partners => ({
+    type: ActionTypes.ADD_PARTNERS,
+    payload: partners
 });
+
+export const partnersLoading = () => ({
+    type: ActionTypes.PARTNERS_LOADING
+});
+
+export const partnersFailed = errMess => ({
+    type: ActionTypes.PARTNERS_FAILED,
+    payload: errMess
+});
+
+export const addFeedback = feedback => ({
+    type: ActionTypes.ADD_FEEDBACK,
+    payload: feedback
+});
+
+export const feedbacksFailed = errMess => ({
+    type: ActionTypes.COMMENTS_FAILED,
+    payload: errMess
+});
+
+export const addFeedbacks = feedbacks => ({
+    type: ActionTypes.ADD_FEEDBACKS,
+    payload: feedbacks
+});
+

@@ -51,11 +51,9 @@ class Contact extends Component {
     }
 
     handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        this.props.postFeedback(this.props.feedbackId, values.firstName, values.lastName, values.phoneNum, values.email, values.agree, values.contactType, values.feedback);
         this.props.resetFeedbackForm();
     }
-
     
     render (){
 
@@ -63,7 +61,7 @@ class Contact extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col">
-                    <Breadcrumb>
+                        <Breadcrumb>
                             <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
                             <BreadcrumbItem active>Contact Us</BreadcrumbItem>
                         </Breadcrumb>
@@ -96,7 +94,7 @@ class Contact extends Component {
                             <Row className="form-group">
                                 <Label htmlFor="firstName" md={2}>First Name</Label>
                                 <Col md={10}>
-                                <Control.text model=".firstName" id="firstName" name="firstName"
+                                    <Control.text model=".firstName" id="firstName" name="firstName"
                                         placeholder="First Name"
                                         className="form-control"
                                         validators={{

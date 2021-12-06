@@ -41,8 +41,9 @@ class CommentForm extends Component{
     }
 
     handleSubmit(values) {
-        this.toggleModal();
-        this.props.postComment(this.props.campsiteId, values.rating, values.author, values.text);
+        console.log('Current State is: ' + JSON.stringify(values));
+        alert('Current State is: ' + JSON.stringify(values));
+        this.props.resetFeedbackForm();
     }
 
     render(){
@@ -153,6 +154,7 @@ function RenderComments({comments, postComment, campsiteId}) {
                         })
                     }
                 </Stagger>
+                <CommentForm campsiteId={campsiteId} postComment={postComment} />
             </div>
         );
     } return
