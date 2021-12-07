@@ -30,7 +30,7 @@ class Contact extends Component {
             }
         };
       
-        this.handleInputChange = this.handleInputChange.bind(this);
+        // this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -51,7 +51,7 @@ class Contact extends Component {
     }
 
     handleSubmit(values) {
-        this.props.postFeedback(this.props.feedbackId, values.firstName, values.lastName, values.phoneNum, values.email, values.agree, values.contactType, values.feedback);
+        this.props.postFeedback(values);
         this.props.resetFeedbackForm();
     }
     

@@ -37,42 +37,32 @@ export const postComment = (campsiteId, rating, author, text) => dispatch => {
         });
 };
 
-export const postFeedback = (feedbackId, firstName, lastName, phoneNum, email, agree, contactType, feedback)  => dispatch => {
-    
-    const newFeedback = {
-        feedbackId: feedbackId,
-        firstName: firstName,
-        lastName: lastName,
-        phoneNum: phoneNum,
-        email: email,
-        agree: agree,
-        contactType: contactType,
-        feedback: feedback
-    };
+export const postFeedback = (feedback) => {
 
     return fetch(baseUrl + 'feedback', {
             method: "POST",
-            body: JSON.stringify(newFeedback),
+            body: JSON.stringify(feedback),
             headers: {
                 "Content-Type": "application/json"
             }
-        })
-        .then(response => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
-                    error.response = response;
-                    throw error;
-                }
-            },
-            error => { throw error; }
-        )
-        .then((response) => response.json())
-        .catch((error) => {
-        console.log("post feedback", error.message);
-        alert("Your feedback could not be posted\nError: " + error.message);
-    });
+    })
+    .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => { throw error; }
+    )
+        .then(response => response.json())
+        .then(alert('Thank you for your feedback!\n' + JSON.stringify(feedback)))
+        .catch(error => {
+            console.log('post feedback', error.message);
+            alert('Your feedback could not be submitted\nError: ' + error.message);
+        });
 };
 
 export const fetchCampsites = () => dispatch => {
@@ -161,11 +151,11 @@ export const fetchPartners = () => dispatch => {
             }
         )
         .then(response => response.json())
-        .then(partners => dispatch(addPartners(partners)))
-        .catch(error => dispatch(partnersFailed(error.message)));
+        // .then(partners => dispatch(addPartners(partners)))
+        // .catch(error => dispatch(partnersFailed(error.message)));
 };
 
-export const fetchFeedback = () => dispatch => {
+export const fetchFeedback = () => {
     return fetch(baseUrl + 'feedbacks')
         .then(response => {
                 if (response.ok) {
@@ -182,8 +172,8 @@ export const fetchFeedback = () => dispatch => {
             }
         )
         .then(response => response.json())
-        .then(feedbacks => dispatch(addFeedbacks(feedbacks)))
-        .catch(error => dispatch(feedbacksFailed(error.message)));
+        // .then(feedbacks => dispatch(addFeedbacks(feedbacks)))
+        // .catch(error => dispatch(feedbacksFailed(error.message)));
 };
 
 export const addCampsites = campsites => ({
