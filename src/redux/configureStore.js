@@ -11,10 +11,10 @@ import { InitialFeedback } from './forms';
 export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
-            campsites: Campsites,
-            comments: Comments,
-            partners: Partners,
-            promotions: Promotions,
+            campsites,
+            comments,
+            partners,
+            promotions,
             ...createForms({
                 feedbackForm: InitialFeedback
             })
