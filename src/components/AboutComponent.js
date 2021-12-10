@@ -6,7 +6,6 @@ import { Loading } from './LoadingComponent';
 import { Fade, Stagger } from 'react-animation-components';
 
 function About(props) {
-
     return (
         <div className="container">
             <div className="row">
@@ -66,18 +65,20 @@ function About(props) {
     );
 }
 
+
 function RenderPartner ({partner}) {
+    
     if(partner){
-    return (
-            <React.Fragment>
-                <Media object src={baseUrl + partner.image} alt={partner.name}  width = "150"/>
-                <Media body className="ml-5 mb-4">
-                    <Media heading>{ partner.name }</Media>{partner.description}
-                </Media>
-            </React.Fragment>
-        )};
-     
-    return <div />
+        return (
+                <React.Fragment>
+                    <Media object src={baseUrl + partner.image} alt={partner.name}  width = "150"/>
+                    <Media body className="ml-5 mb-4">
+                        <Media heading>{ partner.name }</Media>{partner.description}
+                    </Media>
+                </React.Fragment>
+            )};
+        
+        return <div />
 }
 
 function PartnerList(props) {
@@ -90,6 +91,7 @@ function PartnerList(props) {
             </Fade>
         );
     });
+    
     if (props.partners.isLoading) {
         return <Loading />;
     }

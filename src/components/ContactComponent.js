@@ -20,7 +20,7 @@ class Contact extends Component {
             phoneNum: '',
             email: '',
             agree: false,
-            contactType: 'By Phone',
+            contactType: 'By email',
             feedback: '',
             touched: {
                 firstName: false,
@@ -30,7 +30,7 @@ class Contact extends Component {
             }
         };
       
-        // this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -69,7 +69,6 @@ class Contact extends Component {
                         <hr />
                     </div>
                 </div>
-
                 <div className="row row-content align-items-center">
                     <div className="col-sm-4">
                         <h5>Our Address</h5>
