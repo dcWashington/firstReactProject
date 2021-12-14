@@ -28,11 +28,11 @@ class CommentForm extends Component{
         this.toggleModal = this.toggleModal.bind(this);
     }
 
-    handleBlur = (field) => () => {
-        this.setState({
-            touched: {...this.state.touched, [field]: true}
-        });
-    }
+    // handleBlur = (field) => () => {
+    //     this.setState({
+    //         touched: {...this.state.touched, [field]: true}
+    //     });
+    // }
 
     toggleModal() {
         this.setState({
@@ -41,9 +41,10 @@ class CommentForm extends Component{
     }
 
     handleSubmit(values) {
+        this.toggleModal();
+        this.props.postComment(this.props.campsiteId, values.rating, values.author, values.text);
         console.log('Current State is: ' + JSON.stringify(values));
         alert('Current State is: ' + JSON.stringify(values));
-        this.props.resetFeedbackForm();
     }
 
     render(){
