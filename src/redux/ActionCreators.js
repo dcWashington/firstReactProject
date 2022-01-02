@@ -37,21 +37,11 @@ export const postComment = (campsiteId, rating, author, text) => dispatch => {
         });
 };
 
-export const postFeedback = (firstName, lastName, phoneNum, email, agree, contactType, feedback)  => () => {
-
-    const newFeedback = {
-        firstName: firstName,
-        lastName: lastName,
-        phoneNum: phoneNum,
-        email: email,
-        agree: agree,
-        contactType: contactType,
-        feedback: feedback
-    };
-
+export const postFeedback = feedback => () => {
+    
     return fetch(baseUrl + 'feedback', {
             method: "POST",
-            body: JSON.stringify(newFeedback),
+            body: JSON.stringify(feedback),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -67,13 +57,12 @@ export const postFeedback = (firstName, lastName, phoneNum, email, agree, contac
             },
             error => { throw error; }
         )
-        .then((response) => response.json())
-        .then((response) => alert("Thank you for your feedback" + response))
-        .catch((error) => {
-        console.log("feedback", error.message);
-        alert("Your feedback could not be posted\nError: " + error.message);
+        .then(response => response.json())
+        .then(feedback => alert("Thank you \n" + JSON.stringify(feedback)))
+        .catch(error => {
+            console.log('post comment', error.message);
+            alert('Your comment could not be posted\nError: ' + error.message);
         });
-       
 };
 
 export const fetchCampsites = () => dispatch => {

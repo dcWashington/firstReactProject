@@ -152,13 +152,5 @@ export const COMMENTS =
         author: "Brennen Ech",
         date: "2017-06-17T03:33Z"
     },
-    {
-        id: 19,
-        campsiteId: 3,
-        rating: 5, 
-        text: "I caught a world-record-breaking trout here on my last visit.",
-        author: "McKenzie Sebastian",
-        date: "2019-02-18T18:12Z"
-    }
 ]
 
